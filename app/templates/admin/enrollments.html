@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Panel Admin</a></li>
+            <li class="breadcrumb-item active">Inscritos</li>
+        </ol>
+    </nav>
+    
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2>{{ activity.title }}</h2>
+            <p class="text-muted">
+                📅 {{ activity.date }} 
+                {% if activity.time %}⏰ {{ activity.time }}{% endif %}
+                | 👥 {{ enrollments|length }} / {{ activity.max_slots }} plazas
+            </p>
+        </div>
+        <div>
+            <a href="{{ url_for('admin.internal_enrollment', activity_id=activity.id) }}" 
+               class="btn btn-primary">
+                ➕ Inscribir participante
+            </a>
+            <a href="{{ url_for('admin.export_enrollments', activity_id=activity.id) }}" 
+               class="btn btn-success">
+                📥 Exportar CSV
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if enrollments %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Fecha inscripción</th>
+                <th>Estado</th>
+                <th>Asistencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for enrollment in enrollments %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ enrollment.user_name }}</td>
+                <td>{{ enrollment.email }}</td>
+                <td>{{ enrollment.phone or '-' }}</td>
+                <td>{{ enrollment.enrollment_date.strftime('%d/%m/%Y %H:%M') if enrollment.enrollment_date else '-' }}</td>
+                <td>
+                    {% if enrollment.status == 'confirmada' %}
+                    <span class="badge bg-success">Confirmada</span>
+                    {% else %}
+                    <span class="badge bg-secondary">{{ enrollment.status }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="POST" action="{{ url_for('admin.mark_attendance', enrollment_id=enrollment.id) }}" 
+                          class="d-inline-flex gap-1">
+                        {% if enrollment.attended == True %}
+                        <button type="submit" name="attended" value="true" 
+                                class="btn btn-success btn-sm active">
+                            ✓ Asistió
+                        </button>
+                        {% else %}
+                        <button type="submit" name="attended" value="true" 
+                                class="btn btn-outline-success btn-sm">
+                            Asistió
+                        </button>
+                        {% endif %}
+                        
+                        {% if enrollment.attended == False %}
+                        <button type="submit" name="attended" value="false" 
+                                class="btn btn-danger btn-sm active">
+                            ✗ No asistió
+                        </button>
+                        {% else %}
+                        <button type="submit" name="attended" value="false" 
+                                class="btn btn-outline-danger btn-sm">
+                            No asistió
+                        </button>
+                        {% endif %}
+                        
+                        {% if enrollment.attended == None %}
+                        <button type="submit" name="attended" value="" 
+                                class="btn btn-secondary btn-sm active">
+                            Pendiente
+                        </button>
+                        {% else %}
+                        <button type="submit" name="attended" value="" 
+                                class="btn btn-outline-secondary btn-sm">
+                            Pendiente
+                        </button>
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="alert alert-info mt-4">
+    <strong>Resumen de asistencia:</strong><br>
+    Asistieron: {{ enrollments|selectattr('attended', 'equalto', True)|list|length }} |
+    No asistieron: {{ enrollments|selectattr('attended', 'equalto', False)|list|length }} |
+    Pendiente: {{ enrollments|selectattr('attended', 'equalto', None)|list|length }}
+</div>
+
+{% else %}
+<div class="alert alert-warning">
+    No hay inscripciones para esta actividad todavía.
+    <a href="{{ url_for('admin.internal_enrollment', activity_id=activity.id) }}">
+        Inscribir primer participante
+    </a>
+</div>
+{% endif %}
+
+{% endblock %}

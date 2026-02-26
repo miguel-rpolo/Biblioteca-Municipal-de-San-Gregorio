@@ -1,28 +1,31 @@
-from flask import Flask
-from .config import Config
-from .extensions import db, login_manager
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required
+from app.extensions import db
+from app.models.user import User
+
+auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
-def create_app():
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object(Config)
+@auth_bp.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        
+        user = User.query.filter_by(username=username).first()
+        
+        if user and user.check_password(password):
+            login_user(user)
+            return redirect(url_for("activities.index"))
+        else:
+            flash("Usuario o contraseña incorrectos", "error")
+            return render_template("login.html")
+    
+    return render_template("login.html")
 
-    db.init_app(app)
-    login_manager.init_app(app)
 
-    from app.models.user import User
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
-
-    from .routes.auth import auth_bp
-    from .routes.activities import activities_bp
-
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(activities_bp)
-
-    with app.app_context():
-        db.create_all()
-
-    return app
+@auth_bp.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("auth.login"))

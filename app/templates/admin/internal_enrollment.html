@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Panel Admin</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('admin.view_enrollments', activity_id=activity.id) }}">Inscritos</a></li>
+        <li class="breadcrumb-item active">Nueva Inscripción</li>
+    </ol>
+</nav>
+
+<h2>Inscribir Participante</h2>
+<p class="text-muted">Actividad: <strong>{{ activity.title }}</strong> - {{ activity.date }}</p>
+
+<form method="POST" class="mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Nombre completo *</label>
+                <input type="text" name="name" class="form-control" required 
+                       placeholder="Nombre y apellidos">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email *</label>
+                <input type="email" name="email" class="form-control" required 
+                       placeholder="correo@ejemplo.com" list="recent-emails">
+                <datalist id="recent-emails">
+                    {% for email, name, phone in recent_participants %}
+                    <option value="{{ email }}">{{ name }}</option>
+                    {% endfor %}
+                </datalist>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Teléfono</label>
+                <input type="tel" name="phone" class="form-control" 
+                       placeholder="Ej: 600123456">
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Inscribir</button>
+                <a href="{{ url_for('admin.view_enrollments', activity_id=activity.id) }}" 
+                   class="btn btn-secondary">Cancelar</a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Participantes recientes
+                </div>
+                <div class="card-body">
+                    {% if recent_participants %}
+                    <p class="small text-muted">Selecciona un email de la lista desplegable para autocompletar</p>
+                    <ul class="list-group list-group-flush">
+                        {% for email, name, phone in recent_participants[:10] %}
+                        <li class="list-group-item small">
+                            <strong>{{ name }}</strong><br>
+                            {{ email }}
+                            {% if phone %}<br>📞 {{ phone }}{% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">No hay participantes previos</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

@@ -4,9 +4,11 @@
 
 <div class="d-flex justify-content-between mb-3">
     <h2>Actividades</h2>
+    {% if current_user.is_authenticated and current_user.role == 'admin' %}
     <a href="{{ url_for('activities.new_activity') }}" class="btn btn-primary">
         Nueva actividad
     </a>
+    {% endif %}
 </div>
 
 <table class="table table-bordered">
@@ -16,7 +18,7 @@
             <th>Fecha</th>
             <th>Estado</th>
             <th>Plazas disponibles</th>
-            <th>Inscripción</th>
+            <th>Acción</th>
         </tr>
     </thead>
     <tbody>
@@ -24,17 +26,40 @@
         <tr>
             <td>{{ activity.title }}</td>
             <td>{{ activity.date }}</td>
-            <td>{{ activity.status }}</td>
+            <td>
+                {% if activity.status == 'abierta' %}
+                    <span class="badge bg-success">{{ activity.status }}</span>
+                {% elif activity.status == 'cerrada' %}
+                    <span class="badge bg-danger">{{ activity.status }}</span>
+                {% elif activity.status == 'finalizada' %}
+                    <span class="badge bg-secondary">{{ activity.status }}</span>
+                {% else %}
+                    <span class="badge bg-warning">{{ activity.status }}</span>
+                {% endif %}
+            </td>
             <td>{{ activity.available_slots }}</td>
             <td>
-                {% if activity.available_slots > 0 and activity.status == "abierta" %}
-                <form method="POST" action="{{ url_for('activities.enroll', activity_id=activity.id) }}">
-                    <input type="text" name="name" placeholder="Nombre" required class="form-control mb-1">
-                    <input type="email" name="email" placeholder="Email" required class="form-control mb-1">
-                    <button class="btn btn-success btn-sm">Inscribirse</button>
-                </form>
+                {% if current_user.is_authenticated %}
+                    {# Check if user is already enrolled #}
+                    {% set user_enrolled = activity.user_enrolled %}
+                    {% if user_enrolled %}
+                        <span class="badge bg-info me-2">Ya inscrito</span>
+                        <form method="POST" action="{{ url_for('activities.unenroll', activity_id=activity.id) }}" style="display: inline;">
+                            <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('¿Estás seguro de que quieres desapuntarte de esta actividad?');">Desapuntarse</button>
+                        </form>
+                    {% elif activity.available_slots > 0 and activity.status == "abierta" %}
+                        <form method="POST" action="{{ url_for('activities.enroll', activity_id=activity.id) }}" style="display: inline;">
+                            <button type="submit" class="btn btn-success btn-sm">Inscribirse</button>
+                        </form>
+                    {% else %}
+                        <span class="text-muted">No disponible</span>
+                    {% endif %}
                 {% else %}
-                <span class="text-muted">No disponible</span>
+                    {% if activity.status == "abierta" %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-sm">Iniciar sesión para inscribirse</a>
+                    {% else %}
+                        <span class="text-muted">No disponible</span>
+                    {% endif %}
                 {% endif %}
             </td>
         </tr>

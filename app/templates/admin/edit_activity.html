@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Panel Admin</a></li>
+        <li class="breadcrumb-item active">Editar Actividad</li>
+    </ol>
+</nav>
+
+<h2>Editar Actividad</h2>
+
+<form method="POST" class="mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="mb-3">
+                <label class="form-label">Título</label>
+                <input type="text" name="title" class="form-control" 
+                       value="{{ activity.title }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <textarea name="description" class="form-control" rows="4">{{ activity.description or '' }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tipo de actividad</label>
+                <select name="type" class="form-control">
+                    <option value="">Seleccionar...</option>
+                    <option value="taller" {% if activity.type == 'taller' %}selected{% endif %}>Taller</option>
+                    <option value="club_lectura" {% if activity.type == 'club_lectura' %}selected{% endif %}>Club de lectura</option>
+                    <option value="infantil" {% if activity.type == 'infantil' %}selected{% endif %}>Actividad infantil</option>
+                    <option value="formativo" {% if activity.type == 'formativo' %}selected{% endif %}>Evento formativo</option>
+                    <option value="cultural" {% if activity.type == 'cultural' %}selected{% endif %}>Evento cultural</option>
+                    <option value="otro" {% if activity.type == 'otro' %}selected{% endif %}>Otro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <select name="status" class="form-control" required>
+                    <option value="borrador" {% if activity.status == 'borrador' %}selected{% endif %}>Borrador</option>
+                    <option value="abierta" {% if activity.status == 'abierta' %}selected{% endif %}>Abierta</option>
+                    <option value="cerrada" {% if activity.status == 'cerrada' %}selected{% endif %}>Cerrada</option>
+                    <option value="finalizada" {% if activity.status == 'finalizada' %}selected{% endif %}>Finalizada</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Fecha</label>
+                <input type="date" name="date" class="form-control" 
+                       value="{{ activity.date }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Hora</label>
+                <input type="time" name="time" class="form-control" 
+                       value="{{ activity.time or '' }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Duración (minutos)</label>
+                <input type="number" name="duration" class="form-control" 
+                       value="{{ activity.duration or '' }}" placeholder="60">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Plazas máximas</label>
+                <input type="number" name="max_slots" class="form-control" 
+                       value="{{ activity.max_slots }}" required min="1">
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+{% endblock %}
