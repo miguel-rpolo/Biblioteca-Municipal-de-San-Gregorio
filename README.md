@@ -121,7 +121,3 @@ A continuación se muestran capturas reales del sistema corriendo:
 4. Haz un pull request.
 
 ---
-
-## Estado
-
-> ¡Repositorio activo, arquitectura documentada y con cobertura de pruebas unitarias del 100% en los modelos clave!
