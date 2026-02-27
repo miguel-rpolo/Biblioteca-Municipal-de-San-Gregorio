@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-10">
+        <div class="card glass shadow-lg mt-4 p-4 animate__animated animate__zoomIn">
+            <h1 class="mb-3 text-glow"><i class="bi bi-journal-richtext me-2"></i>{{ activity.title }}</h1>
+            <div class="mb-2">
+                <span class="badge bg-info text-dark fs-6 me-2"><i class="bi bi-calendar-week"></i> {{ activity.date }}</span>
+                <span class="badge bg-secondary">{{ activity.status|capitalize }}</span>
+            </div>
+            {% if activity.description %}
+                <p class="mt-3 mb-2" style="font-size: 1.1em;">{{ activity.description }}</p>
+            {% endif %}
+            <a href="{{ url_for('activities.index') }}" class="btn btn-outline-secondary mt-4"><i class="bi bi-arrow-left"></i> Volver a listado</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

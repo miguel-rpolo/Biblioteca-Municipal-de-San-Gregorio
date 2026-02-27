@@ -2,47 +2,61 @@
 
 {% block content %}
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
+<div class="row justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="col-xl-5 col-lg-6 col-md-8">
         <!-- Test Credentials Box -->
-        <div class="alert alert-info mb-4">
-            <h5 class="alert-heading">🔑 Credenciales de Prueba</h5>
-            <hr>
-            <div class="row">
-                <div class="col-md-6">
+        <div class="alert alert-info glass shadow-lg mb-4 fade-in-up">
+            <h5 class="alert-heading mb-3"><i class="bi bi-lightbulb me-2"></i>🔑 Credenciales de Prueba</h5>
+            <div class="row px-lg-2">
+                <div class="col-sm-6 mb-2 mb-sm-0">
                     <p class="mb-2"><strong>👤 Usuario Normal:</strong></p>
-                    <p class="mb-1">Usuario: <code>usuario</code></p>
-                    <p class="mb-0">Contraseña: <code>usuario123</code></p>
+                    <span class="badge rounded-pill bg-primary mb-1">usuario</span>
+                    <span class="badge rounded-pill bg-secondary mb-1">usuario123</span>
                 </div>
-                <div class="col-md-6">
+                <div class="col-sm-6">
                     <p class="mb-2"><strong>👑 Administrador:</strong></p>
-                    <p class="mb-1">Usuario: <code>admin</code></p>
-                    <p class="mb-0">Contraseña: <code>admin123</code></p>
+                    <span class="badge rounded-pill bg-primary mb-1">admin</span>
+                    <span class="badge rounded-pill bg-secondary mb-1">admin123</span>
                 </div>
             </div>
         </div>
 
         <!-- Login Form -->
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title mb-4">Iniciar sesión</h3>
+        <div class="card glass shadow-lg animate__animated animate__fadeInDown">
+            <div class="card-body p-5">
+                <h3 class="card-title mb-4 text-center text-glow">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión
+                </h3>
 
-                <form method="POST">
-                    <div class="mb-3">
+                <form method="POST" autocomplete="on">
+                    <div class="mb-4">
                         <label class="form-label">Usuario</label>
-                        <input type="text" name="username" class="form-control" required>
+                        <input type="text" name="username" class="form-control form-control-lg shadow-sm" required autocomplete="username">
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <input type="password" name="password" class="form-control form-control-lg shadow-sm" required autocomplete="current-password">
                     </div>
 
-                    <button class="btn btn-primary w-100">Entrar</button>
+                    <button class="btn btn-primary w-100 py-2 fs-5 shadow animate__animated animate__pulse">
+                        <i class="bi bi-door-open me-1"></i> Entrar
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .alert-info.glass {
+        backdrop-filter: blur(5px);
+        border-radius: 1.2rem;
+        border: 1px solid #e5effc80;
+        box-shadow: 0 4px 20px #bbe4ff49;
+        font-family: 'Quicksand', Arial, sans-serif;
+        font-size: 1.07rem;
+    }
+</style>
 
 {% endblock %}

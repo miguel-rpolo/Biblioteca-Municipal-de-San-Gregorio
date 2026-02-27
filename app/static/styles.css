@@ -1,0 +1,94 @@
+/* ----------- Estilos visuales y animaciones avanzadas ----------- */
+body {
+    background-attachment: fixed;
+}
+
+.card,
+.glass {
+    background: rgba(255,255,255,0.78);
+    border-radius: 1.1rem;
+    box-shadow: 0 8px 26px rgba(0,0,0,0.13), 0 1.5px 8px rgba(80,91,216,.07);
+    backdrop-filter: blur(7px);
+    border: none;
+    transition: transform .18s, box-shadow .21s;
+}
+
+.card:hover, .glass:hover {
+    transform: translateY(-5px) scale(1.023);
+    box-shadow: 0 16px 36px rgba(80, 136, 255, 0.17);
+}
+
+/* Botón principal y animaciones */
+.btn-primary {
+    background: linear-gradient(90deg,#5ea8fa 0,#3b82f6 100%);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    transition: box-shadow .15s,background .23s,transform .12s;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background: linear-gradient(90deg,#3b82f6 0,#2a66aa 100%);
+    box-shadow: 0 5px 22px #6cc0ff44;
+    transform: scale(1.048);
+}
+
+/* Botón secundario estilizado */
+.btn-outline-secondary {
+    border: 2px solid #adcfff;
+    color: #3b424e;
+    background: #fafeffb9;
+    font-weight: 500;
+    transition: border .15s;
+}
+.btn-outline-secondary:hover {
+    border-color: #4ca9ff;
+    color: #156bb0;
+}
+
+.toast.fade-in-up {
+    animation: fadeInUpToast .65s cubic-bezier(.33,1.1,.65,1) both;
+}
+@keyframes fadeInUpToast {
+    from { transform:translateY(40px) scale(.88); opacity:0; }
+    to   { transform:translateY(0) scale(1); opacity:1; }
+}
+
+/* Inputs animados */
+.form-control:focus, input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+    box-shadow: 0 0 0 .15rem #68a5ff55;
+    border-color: #5ea8fa;
+    outline: none;
+}
+
+/* Tablas */
+.table-hover tbody tr:hover {
+    background: #e6f1ff66 !important;
+    transition: background .3s;
+}
+
+.table thead {
+    background: #deeaff;
+}
+
+/* Mensajes útiles */
+.text-glow {
+    text-shadow: 0 2px 15px #55afff69, 0 0px 1px #fff;
+}
+
+h1, h2, h3, .navbar-brand {
+    font-family: 'Montserrat', Arial, sans-serif;
+    letter-spacing: .02em;
+}
+
+a, .nav-link {
+    transition: color .17s;
+}
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+::-webkit-scrollbar-thumb {
+    background: #dbeefd;
+    border-radius: 4px;
+}

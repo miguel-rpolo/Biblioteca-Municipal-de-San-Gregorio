@@ -1,0 +1,46 @@
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Byte-compiled / optimizations
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# SQLite DBs y otras bases temporales
+instance/
+*.db
+*.sqlite3
+
+# Archivos de logs
+*.log
+
+# Test cache
+.pytest_cache/
+
+# Jupyter notebooks checkpoint
+.ipynb_checkpoints/
+
+# Cobertura y reportes
+htmlcov/
+.coverage*
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.pyc
+
+# Carpeta de screenshots (si no se quiere commitear capturas automáticamente, coméntalo si lo deseas incluir)
+# docs/screenshots/

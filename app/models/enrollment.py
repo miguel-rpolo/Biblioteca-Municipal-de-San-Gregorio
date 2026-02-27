@@ -2,6 +2,9 @@ from app.extensions import db
 from datetime import datetime
 
 class Enrollment(db.Model):
+    def __repr__(self):
+        return f"<Enrollment {self.user_name}>"
+
     __table_args__ = (
         db.UniqueConstraint('email', 'activity_id', name='unique_enrollment'),
     )

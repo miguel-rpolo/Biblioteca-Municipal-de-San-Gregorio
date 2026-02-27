@@ -205,3 +205,11 @@ def new_activity():
         return redirect(url_for("activities.index"))
 
     return render_template("create_activity.html")
+
+# ==============================
+# DETALLE ACTIVIDAD
+# ==============================
+@activities_bp.route("/<int:activity_id>", methods=["GET"])
+def detail(activity_id):
+    activity = Activity.query.get_or_404(activity_id)
+    return render_template("activity_detail.html", activity=activity)

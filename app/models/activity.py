@@ -2,6 +2,9 @@ from app.extensions import db
 from datetime import datetime
 
 class Activity(db.Model):
+    def __repr__(self):
+        return f"<Activity {self.title}>"
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)

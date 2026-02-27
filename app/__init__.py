@@ -2,7 +2,6 @@ from flask import Flask
 from .config import Config
 from .extensions import db, login_manager
 
-
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(Config)
@@ -23,6 +22,17 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(activities_bp)
     app.register_blueprint(admin_bp)
+
+    # Alias /login y /logout globales
+    from flask import request
+    @app.route("/login", methods=["GET", "POST"])
+    def login_alias():
+        # Redirigir internamente al blueprint
+        return app.view_functions['auth.login']()
+
+    @app.route("/logout")
+    def logout_alias():
+        return app.view_functions['auth.logout']()
 
     # Root route redirect
     @app.route('/')
